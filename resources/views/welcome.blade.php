@@ -24,9 +24,10 @@
 <header>
     <h1>Bienvenido a PB-MAPS</h1>
     <nav class="navegacion">
-        <a href="#">Lugares Turísticos</a>
+        <a href="{{ url('/lugares') }}">Lugares Turísticos</a>
         <a href="#">Eventos</a>
         <a href="#">Hoteles</a>
+        <a href="#">¿Por qué se creo PB-MAPS</a>
     </nav>
 </header>
 <body>

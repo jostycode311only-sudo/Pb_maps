@@ -9,3 +9,7 @@ Route::get('/', function () {
 Route::get('/prueba-texto', function () {
     return 'Hola, esto es una prueba de ruta para PB_MAPS';
 });
+
+Route::get('/lugares', function () {
+    return view('lugares.index');
+});
