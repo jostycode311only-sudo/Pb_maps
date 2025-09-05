@@ -26,7 +26,7 @@
     <nav class="navegacion">
         <a href="{{ url('/lugares') }}">Lugares Turísticos</a>
         <a href="#">Eventos</a>
-        <a href="#">Hoteles</a>
+        <a href="{{ url('/hoteles') }}">Hoteles</a>
         <a href="#">¿Por qué se creo PB-MAPS</a>
     </nav>
 </header>

@@ -13,3 +13,7 @@ Route::get('/prueba-texto', function () {
 Route::get('/lugares', function () {
     return view('lugares.index');
 });
+
+Route::get('/hoteles', function () {
+    return view('hoteles.index');
+});

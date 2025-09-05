@@ -4,6 +4,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PBMAPS-lugares turisticos</title>
  <style>
+        
+.navegacion {
+            background-color: #333;
+            overflow: hidden;
+}
+.navegacion a {
+            float: left;
+            display: block;
+            color: #fff;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+}
+.navegacion a:hover {
+            background-color: #575757;
+}
+    
     /* Estilos para el nuevo contenedor de lugares */
 .lugares-contenedor {
     display: flex; /* Convierte el contenedor en un Flexbox */
@@ -55,7 +72,7 @@
     <a href="{{ url('/eventos') }}">Eventos</a>
     <a href="{{ url('/hoteles') }}">Hoteles</a>
     <a href="#">¿Por qué se creo PB-MAPS?</a>
-</nav>
+    </nav>
 </header>
 <body>
     <div class="contenedor_1"></div>
