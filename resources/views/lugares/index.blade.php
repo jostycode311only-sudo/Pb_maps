@@ -48,6 +48,7 @@
 <header>
     <h1>Bienvenido a Lugares Turísticos</h1>
     <h2>¿Qué te gustaría visitar o explorar el día de hoy?</h2>
+    <h2>En Puerto Boyacá tenemos multiples lugares para explorar y pasar el rato. </h2>
     <nav class="navegacion">
     <a href="{{ url('/') }}">Inicio</a>
     <a href="{{ url('/lugares') }}">Lugares Turísticos</a>
