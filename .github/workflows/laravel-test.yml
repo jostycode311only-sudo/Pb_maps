@@ -1,0 +1,70 @@
+# Nombre del flujo de trabajo de GitHub Actions
+name: Run Laravel Tests
+
+# Define cuándo se ejecutará este flujo de trabajo
+on: [push, pull_request]
+
+# Define los trabajos (jobs) que se ejecutarán
+jobs:
+  laravel-tests:
+    # El tipo de máquina virtual en la que se ejecutarán los tests
+    runs-on: ubuntu-latest
+
+    # Los pasos que se ejecutarán en el trabajo
+    steps:
+      # 1. Checkout del código del repositorio
+      # Este paso descarga tu código en la máquina virtual
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Configuración de PHP
+      # Instala la versión de PHP y las extensiones necesarias
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, bcmath, sqlite, pdo_sqlite # Añadido pdo_sqlite para mayor compatibilidad
+          coverage: none # Desactiva la generación de cobertura de código para tests más rápidos
+
+      # 3. Caché de dependencias de Composer (¡MEJORA!)
+      # Almacena las dependencias descargadas para acelerar futuras ejecuciones
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      # 4. Instalación de dependencias de Composer
+      # Instala las librerías de PHP definidas en composer.json
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      # 5. Preparación del archivo de entorno (.env)
+      # Copia el archivo de ejemplo para crear el .env
+      - name: Prepare environment file
+        run: cp .env.example .env
+
+      # 6. Configuración del entorno para pruebas (¡MEJORA!)
+      # Modifica el .env para usar una base de datos en memoria (SQLite)
+      # Esto hace las pruebas mucho más rápidas y fiables
+      - name: Configure environment for testing
+        run: |
+          sed -i 's/DB_CONNECTION=mysql/DB_CONNECTION=sqlite/' .env
+          sed -i 's/DB_DATABASE=laravel/DB_DATABASE=:memory:/' .env
+
+      # 7. Generación de la clave de la aplicación
+      # Es un requisito para que Laravel funcione
+      - name: Generate app key
+        run: php artisan key:generate
+
+      # 8. Ejecución de migraciones de la base de datos
+      # Crea la estructura de la base de datos en memoria para las pruebas
+      - name: Run migrations
+        run: php artisan migrate --force
+
+      # 9. Ejecución de las pruebas (¡CORREGIDO Y MEJORADO!)
+      # Usa el ejecutable directo de PHPUnit para mayor robustez
+      - name: Run tests
+        run: ./vendor/bin/phpunit
