@@ -16,7 +16,7 @@ jobs:
       # Este paso descarga tu código en la máquina virtual
       - name: Checkout repository
         uses: actions/checkout@v3
-
+        
       # 2. Configuración de PHP
       # Instala la versión de PHP y las extensiones necesarias
       - name: Set up PHP

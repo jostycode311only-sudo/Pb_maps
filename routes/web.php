@@ -17,3 +17,5 @@ Route::get('/lugares', function () {
 Route::get('/hoteles', function () {
     return view('hoteles.index');
 });
+
+Route::resource('Lugares', LugarTuristicoController::class);
