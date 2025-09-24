@@ -75,30 +75,57 @@
     </nav>
 </header>
 <body>
-    <div class="contenedor_1"></div>
-    <h2>Explorar lugares de interés, que nunca has visitado, cada lugar puede ser una experiencia nueva</h2>
-    
-    <div class="lugar-turistico">
-        <div class="imagen-contenedor">
-            <img src="URL_IMAGEN_PIEDRA.jpg" alt="La Piedra del Sol">
+    {{-- Bloque para mostrar mensajes de éxito --}}
+    @if (session('success'))
+        <div style="padding: 1em; margin-bottom: 1em; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;">
+            {{ session('success') }}
         </div>
-        <div class="info-contenedor">
-            <h2>La Piedra del Sol</h2>
-            <p>La Piedra del Sol es un monumento histórico ubicado en el corazón de la ciudad. Es un destino popular para los amantes de la historia y ofrece vistas panorámicas impresionantes.</p>
-            <a href="#">Ver ubicación</a>
-        </div>
+    @endif
+
+    {{-- Contenedor principal para aplicar el Flexbox --}}
+    <div class="lugares-contenedor">
+
+        {{-- Bucle de Blade que recorrerá cada lugar turístico --}}
+        @forelse ($lugares as $lugar)
+            <div class="lugar-turistico">
+                <div class="imagen-contenedor">
+                    <img src="https://via.placeholder.com/400x250.png?text=Lugar+Turistico" alt="Imagen de {{ $lugar->nombre }}">
+                </div>
+                <div class="info-contenedor">
+                    <h2>{{ $lugar->nombre }}</h2>
+                    <p>{{ $lugar->descripcion }}</p>
+                    <p><strong>Ubicación:</strong> {{ $lugar->ubicacion }}</p>
+
+                    <a href="#">Ver detalles</a>
+
+                    {{-- Solo muestra los botones de acción si el usuario es admin --}}
+                    @if(auth()->check() && auth()->user()->role === 'admin')
+                        <div style="margin-top: 10px;">
+                            <a href="{{ route('lugares.edit', $lugar->id) }}" style="padding: 5px 10px; background-color: #ffc107; color: black; text-decoration: none; border-radius: 3px;">
+                                Editar
+                            </a>
+                            {{-- Aquí pondremos el botón de eliminar más adelante --}}
+                        </div>
+                    @endif
+                    </div>
+            </div>
+        @empty
+            <div>
+                <h2>No hay lugares turísticos para mostrar todavía.</h2>
+                <p>¡Intenta añadir uno nuevo!</p>
+            </div>
+        @endforelse
+
     </div>
 
-    <div class="lugar-turistico">
-        <div class="imagen-contenedor">
-            <img src="URL_IMAGEN_PUENTE.jpg" alt="Puente del Amor">
-        </div>
-        <div class="info-contenedor">
-            <h2>Puente del Amor</h2>
-            <p>El Puente del Amor es un lugar icónico, conocido por sus hermosos atardeceres y su arquitectura. Es el sitio perfecto para una caminata romántica.</p>
-            <a href="#">Ver ubicación</a>
-        </div>
+    {{-- El botón de "Añadir" que ya tenías está perfecto aquí --}}
+    @if(auth()->check() && auth()->user()->role === 'admin')
+    <div style="text-align: center; padding: 20px;">
+        <a href="{{ url('/lugares/create') }}" style="display: inline-block; padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">
+            + Añadir Nuevo Lugar Turístico
+        </a>
     </div>
-    
+    @endif
+
 </body>
 </html>

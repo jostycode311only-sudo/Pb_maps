@@ -19,7 +19,9 @@ class LugarTuristicoController extends Controller
      */
     public function create()
     {
-        //
+    // Esta línea le dice a Laravel: busca en 'resources/views/lugares/'
+    // un archivo llamado 'create.blade.php' y muéstralo.
+    return view('lugares.create'); //
     }
 
     /**
@@ -35,7 +37,19 @@ class LugarTuristicoController extends Controller
      */
     public function show(string $id)
     {
-        //
+    // 1. Validación de los datos del formulario
+    $validated = $request->validate([
+        'nombre' => 'required|string|max:255',
+        'descripcion' => 'required|string',
+        'ubicacion' => 'required|string|max:255',
+    ]);
+
+    // 2. Creación del nuevo registro en la base de datos
+    // Usa el modelo para crear un nuevo lugar con los datos ya validados
+    LugarTuristico::create($validated);
+
+    // 3. Redirección a la página principal con un mensaje de éxito
+    return redirect('/lugares')->with('success', '¡Lugar turístico creado exitosamente!');
     }
 
     /**
